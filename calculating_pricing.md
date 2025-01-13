@@ -1,8 +1,12 @@
-# 料金比較
+# 料金比較 (USD/month)
 ## Case 1
 cloudfront - s3 - api gateway - lambda - dynamoDB構成
 
-| 列1 | 列2 | 列3 |
-|-----|-----|-----|
-| 内容1 | 内容2 | 内容3 |
-| データ1 | データ2 | データ3 |
+| Resource    | Price | note  |
+|-------------|-------|-----------------------------------------------------------------|
+| Cloudfront  | $1.86 | 10GB Data transfer out to internet and Origin, 100,000 requests |
+| S3          |  |  |
+| api gateway |  |  |
+| lambda      |  |  |
+| DynamoDB    |  |  |
+
