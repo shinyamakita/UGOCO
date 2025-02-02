@@ -8,3 +8,7 @@ price_class = "PriceClass_200"
 min_ttl     = 0
 default_ttl = 3600
 max_ttl     = 86400
+
+# lambda
+timeout = 30
+memory_size = 256

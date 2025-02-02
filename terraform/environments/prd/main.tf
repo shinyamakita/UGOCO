@@ -10,6 +10,11 @@ module "cloudfront" {
     
     environment = var.environment
     aws_region  = var.aws_region
+    s3_bucket_domain_name = module.s3.bucket_domain_name
+    price_class = var.price_class
+    min_ttl     = var.min_ttl
+    default_ttl = var.default_ttl
+    max_ttl     = var.max_ttl
 }
 
 module "s3" {
@@ -29,8 +34,10 @@ module "api_gateway" {
 module "lambda" {
     source = "../../modules/lambda"
 
-    environment = var.environment
-    aws_region  = var.aws_region
+    ...local.common_vars
+    name_prefix = local.name_prefix
+    api_gateway_execution_arn = module.api_gateway.execution_arn
+    dynamo_table_name = module.dynamodb.table_name
 }
 
 module "dynamo_db" {
