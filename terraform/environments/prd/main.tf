@@ -36,6 +36,13 @@ module "lambda" {
 
     ...local.common_vars
     name_prefix = local.name_prefix
+
+    timeout = var.timeout
+    memory_size = var.memory_size
+
+    subnet_ids = module.vpc.private_subnet_ids
+    security_group_id = module.vpc.lambda_security_group id
+
     api_gateway_execution_arn = module.api_gateway.execution_arn
     dynamo_table_name = module.dynamodb.table_name
 }

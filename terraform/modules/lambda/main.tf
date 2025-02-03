@@ -9,6 +9,9 @@ module "lambda_function" {
     timeout       = var.timeout
     memory_size   = var.memory_size
 
+    vpc_subnet_ids = var.subnet_ids
+    vpc_security_group_ids = [var.security_group_id]
+
     source_path = "../src"
 
     allowed_triggers = {
