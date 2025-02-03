@@ -2,7 +2,7 @@ module "vpc" {
     source  = "terraform-aws-modules/vpc/aws"
     version = "~> 5.0"
 
-    name = local.vpc_name
+    name = "${var.name_prefix}-vpc"
     cidr = var.vpc_cidr
 
     azs = data.aws_availability_zones.available.names
@@ -13,15 +13,13 @@ module "vpc" {
 
     enable_nat_gateway = false
     enable_vpn_gateway = false
-
-    tags = local.common_tags
 }
 
 module "sg" {
     source  = "terraform-aws-modules/security-group/aws"
     version = "~> 5.0"
 
-    name   = local.sg_name
+    name   = "${var.name_prefix}-sg"
     vpc_id = module.vpc.vpc_id
 
     egress_with_cidr_blocks = [
@@ -34,8 +32,18 @@ module "sg" {
     ]
 }
 
-module "aws_vpc_endpoint" "dynamodb" {
+module "vpc_endpoint" {
+    source = "terraform-aws-modules/vpc/aws//modules/vpc-endpoints"
+    version = "5.0.0"
+
     vpc_id = module.vpc.vpc_id
-    service_name = "com.amazonaws.${var.aws_region}.dynamodb"
-    route_table = module.vpc.private_route_table_ids
+
+    endpoints = {
+        dynamodb = {
+            service = "dynamodb"
+            service_type = "Gateway"
+            route_table_ids = module.vpc.private_route_table_ids
+            policy = data.aws_iam_policy_document.dynamodb_endpoint_policy.json
+        }
+    }
 }
